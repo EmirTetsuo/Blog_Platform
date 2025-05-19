@@ -12,10 +12,7 @@ export const MainPage = () => {
     const [activeTag, setActiveTag] = useState(null);
     const postsPerPage = 5;
     const [searchQuery, setSearchQuery] = useState('');
-    const [page, setPage] = useState(() => {
-        const savedPage = localStorage.getItem('mainPageCurrentPage');
-        return savedPage ? Number(savedPage) : 1;
-    });
+    const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
     
     useEffect(() => {

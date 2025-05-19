@@ -14,13 +14,27 @@ export const PostItemContent = ({ post }) => {
 
     const togglePlayPause = () => {
         if (!userWantsToPlay) {
-            setUserWantsToPlay(true);
+            setUserWantsToPlay((prev) => !prev);
         } else {
             setUserWantsToPlay(false);
             videoRef.current.pause();
             setIsPlaying(false);
         }
     };
+
+    useEffect(() => {
+        const videoElement = videoRef.current;
+        if (!videoElement) return;
+
+        if (userWantsToPlay) {
+            videoElement.play();
+            setIsPlaying(true);
+        } else {
+            videoElement.pause();
+            setIsPlaying(false);
+        }
+    }, [userWantsToPlay]);
+
 
     const handleReplay = () => {
         if (videoRef.current) {
@@ -102,22 +116,20 @@ export const PostItemContent = ({ post }) => {
                         Ваш браузер не поддерживает видео.
                     </video>
 
-                    {(isEnded || !isPlaying) && (
-                        <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 group-hover:flex">
-                            <button
-                                onClick={isEnded ? handleReplay : togglePlayPause}
-                                className="text-white opacity-70 hover:opacity-100 transition"
-                            >
-                                {isEnded ? (
-                                    <FaRedo className="max-md:w-8 max-md:h-8 w-20 h-20" />
-                                ) : isPlaying ? (
-                                    <FaPause className="max-md:w-8 max-md:h-8 w-20 h-20" />
-                                ) : (
-                                    <FaPlay className="max-md:w-8 max-md:h-8 w-20 h-20" />
-                                )}
-                            </button>
-                        </div>
-                    )}
+                    <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 group-hover:flex">
+                        <button
+                            onClick={isEnded ? handleReplay : togglePlayPause}
+                            className="text-white opacity-70 hover:opacity-100 transition"
+                        >
+                            {isEnded ? (
+                                <FaRedo className="max-md:w-8 max-md:h-8 w-20 h-20" />
+                            ) : isPlaying ? (
+                                <FaPause className="max-md:w-8 max-md:h-8 w-20 h-20" />
+                            ) : (
+                                <FaPlay className="max-md:w-8 max-md:h-8 w-20 h-20" />
+                            )}
+                        </button>
+                    </div>
 
                     <button
                         onClick={toggleMute}
