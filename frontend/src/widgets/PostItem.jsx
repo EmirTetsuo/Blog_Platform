@@ -13,7 +13,7 @@ export const PostItem = ({ post }) => {
     }
 
     return (
-        <div className='group w-full max-sm:h-[450px] max-md:h-[500px] h-[650px]'>
+        <div className='group w-full max-sm:h-[358px] max-md:h-[500px] h-[650px]'>
             <div className='bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full flex flex-col'>
                 <PostItemTop post={post} />
 

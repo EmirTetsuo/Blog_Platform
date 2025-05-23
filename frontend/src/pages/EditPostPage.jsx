@@ -24,7 +24,7 @@ export const EditPostPage = () => {
         setTitle(data.title)
         setText(data.text)
         setOldImage(data.imgUrl)
-        setSelectedTags(data.tags ? data.tags.split(',') : [])
+        setSelectedTags(Array.isArray(data.tags) ? data.tags : data.tags?.split(',') || [])
     }, [params.id])
 
     const handleTagChange = (tag) => {

@@ -86,9 +86,9 @@ export const DashBoard = () => {
 
   return (
     <div className="flex">
-      < DashBoardSideBar setActiveSection={setActiveSection}/>
+      <DashBoardSideBar setActiveSection={setActiveSection}/>
 
-      <div className="flex-1 bg-gray-100 p-6 overflow-y-auto">
+      <div className="flex-1 bg-gray-100 p-6 overflow-y-auto min-h-screen">
         {activeSection === 'overview' && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-md shadow-lg">
@@ -116,9 +116,8 @@ export const DashBoard = () => {
                 <PostItem post={post} />
                 <button
                   onClick={() => removePostHandler(post._id)}
-                  className="max-md:text-sm flex items-center justify-center p-2 mt-2 bg-gray-700 rounded-full text-gray-200 
+                  className="max-md:text-sm flex w-full items-center justify-center p-2 mt-2 bg-gray-700 rounded-full text-gray-200 
                   hover:bg-red-100 hover:text-red-600 transition-all shadow focus:outline-none focus:ring-2 focus:ring-red-400"
-                  style={{ width: '300px' }}
                 >
                   Delete Post
                   <AiFillDelete size={20} />

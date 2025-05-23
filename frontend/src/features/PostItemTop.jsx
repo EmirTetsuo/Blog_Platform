@@ -83,8 +83,8 @@ export const PostItemTop = ({ post }) => {
                 </div>
             </div>
             <div className='mt-2'>
-                <div className='text-lg font-semibold text-gray-800'>{post.title}</div>
-                <p className='text-md text-gray-600 mt-2 line-clamp-4'>{post.text}</p>
+                <div className='text-lg max-md:text-sm font-semibold text-gray-800'>{post.title}</div>
+                <p className='text-md max-md:text-sm text-gray-600 mt-2 max-md:mt-1 line-clamp-4'>{post.text}</p>
             </div>
         </div>
     );
