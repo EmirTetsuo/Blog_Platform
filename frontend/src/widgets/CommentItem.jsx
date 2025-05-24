@@ -10,6 +10,7 @@ export const CommentItem = ({ cmt }) => {
             <div className="flex items-center w-12 h-12">
                 <img
                     src={cmt?.authorAvatar ? `${API_URL}/${cmt.authorAvatar}` : avatarImg} 
+                    alt=''
                     className="w-10 h-10 rounded-full object-cover"
                 />
             </div>

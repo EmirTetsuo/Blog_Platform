@@ -105,6 +105,7 @@ export const Navbar = () => {
                                 >
                                     <img 
                                         src={user?.imgUrl ? `${API_URL}/${user.imgUrl}` : avatarImg} 
+                                        alt=''
                                         className="w-10 h-10 rounded-full object-cover"
                                     />
                                 </Link>
