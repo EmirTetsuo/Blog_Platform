@@ -4,7 +4,7 @@ import { AiFillDelete } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux';
 import { PostItem } from '../widgets/PostItem';
 import { getAllPostsNoParams, removePostFromAdmin } from '../shared/slices/post/postSlice';
-import { getAllComments, removeCommentFromAdmin } from '../shared/slices/comment/commentSlice';  
+import { getAllComments } from '../shared/slices/comment/commentSlice';  
 import { toast } from 'react-toastify';
 import { checkIsAuth, getMe, getAllUsers, removeUserFromAdmin } from '../shared/slices/auth/authSlice';
 import { DashBoardSideBar } from '../widgets/DashBoardSideBar';
@@ -52,7 +52,6 @@ export const DashBoard = () => {
     if (!confirmDelete) return;
 
     try {
-        const data = await dispatch(removeCommentFromAdmin(CommentId)).unwrap(); 
         toast('Комментарий был удален');
         dispatch(getAllComments()); 
     } catch (error) {

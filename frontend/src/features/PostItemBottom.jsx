@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AiFillEye, AiOutlineMessage, AiFillHeart, AiOutlineHeart, AiOutlineShareAlt } from 'react-icons/ai';
 import { FaTelegramPlane, FaWhatsapp, FaLink, FaBookmark, FaRegBookmark } from 'react-icons/fa';

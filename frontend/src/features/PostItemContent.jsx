@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaVolumeUp, FaVolumeMute, FaPlay, FaPause, FaRedo } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
 
 export const PostItemContent = ({ post }) => {
-    const user = useSelector((state) => state.auth.user);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
     const [userWantsToPlay, setUserWantsToPlay] = useState(false);

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { FaUser, FaBlog, FaCog, FaTachometerAlt, FaComment, FaSignOutAlt, FaHome } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { logout } from '../shared/slices/auth/authSlice';
 
