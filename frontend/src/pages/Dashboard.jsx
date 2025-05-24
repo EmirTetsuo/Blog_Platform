@@ -70,17 +70,18 @@ export const DashBoard = () => {
     if (user === null) {
       dispatch(getMe()); 
       return;
-  }
+    }
 
-  if (!isAuth || user?.username !== 'Admin') {
-      navigate('/404'); 
-      return;
-  }
+    if (!isAuth || user?.username !== 'Admin') {
+        navigate('/404'); 
+        return;
+    }
+
     dispatch(getAllPostsNoParams()); // Fetch posts
     dispatch(getAllComments()); // Fetch comments
     dispatch(getAllUsers()); // Fetch users
   
-  }, [dispatch, navigate, user]); 
+  }, [dispatch, navigate, user, isAuth]); 
   
 
   return (
