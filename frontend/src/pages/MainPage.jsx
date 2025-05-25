@@ -26,11 +26,14 @@ export const MainPage = () => {
         const query = event.target.value;
         setSearchQuery(query);
         setPage(1);
-        if (activeTag) {
-            dispatch(getPostsByTag({ tag: activeTag, searchQuery: query, page: 1 }));
-        } else {
-            dispatch(getAllPosts({ searchQuery: query, page: 1 }));
+        if (query.length >= 2 || query.length === 0) {
+            if (activeTag) {
+                dispatch(getPostsByTag({ tag: activeTag, searchQuery: query, page: 1 }));
+            } else {
+                dispatch(getAllPosts({ searchQuery: query, page: 1 }));
+            }
         }
+
     };
 
     const handlePageChange = (newPage) => {

@@ -12,8 +12,14 @@ export const PostItemBottom = ({ post }) => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user);
     const userId = user?._id;
-    const [isLiked, setIsLiked] = useState(userId && post.likes.includes(userId));
-    const [isFavorited, setIsFavorited] = useState(userId && user.favorites.includes(post._id));
+    const [isLiked, setIsLiked] = useState(
+        userId && Array.isArray(post.likes) && post.likes.includes(userId)
+    );
+
+    const [isFavorited, setIsFavorited] = useState(
+        userId && Array.isArray(user?.favorites) && user.favorites.includes(post._id)
+    );
+
     const [isShareOpen, setIsShareOpen] = useState(false);
     const FRONT_URL = process.env.REACT_APP_FRONT_URL;
 
@@ -70,12 +76,12 @@ export const PostItemBottom = ({ post }) => {
 
             <div className='flex gap-4 items-center mt-4 text-base text-gray-500'>
                 <button className='flex items-center gap-1' onClick={handleLike}>
-                    {isLiked ? (
-                        <AiFillHeart className='text-red-500' />
-                    ) : (
+                    {!isLiked ? (
                         <AiOutlineHeart />
+                    ) : (
+                        <AiFillHeart className='text-red-500' />
                     )}
-                    <span>{post.likes.length}</span>
+                <span>{Array.isArray(post.likes) ? post.likes.length : 0}</span>
                 </button>
                 <button className='flex items-center gap-1'>
                     <AiFillEye />

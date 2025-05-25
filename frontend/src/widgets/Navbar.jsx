@@ -138,19 +138,30 @@ export const Navbar = () => {
                 {isMobile && isMenuOpen && (
                     <Drawer anchor="right" open={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
                         <List sx={{ width: 250 }}>
-                            <ListItem className='text-lg' button onClick={() => { setIsMenuOpen(false); navigate(pathKeys.posts.root()); }}>
-                                Мой Профиль
-                            </ListItem>
-                            <ListItem button onClick={() => { setIsMenuOpen(false); navigate('/'); }}>
-                                Главная
-                            </ListItem>
-                            <ListItem button onClick={() => { setIsMenuOpen(false); navigate(pathKeys.posts.new()); }}>
-                                Добавить пост
-                            </ListItem>
-                            {isAuth && (
-                                <ListItem button onClick={logoutHandler}>
-                                    Выйти
-                                </ListItem>
+                            {isAuth ? (
+                                <>
+                                    <ListItem button onClick={() => { setIsMenuOpen(false); navigate(pathKeys.posts.root()); }}>
+                                        Мой Профиль
+                                    </ListItem>
+                                    <ListItem button onClick={() => { setIsMenuOpen(false); navigate('/'); }}>
+                                        Главная
+                                    </ListItem>
+                                    <ListItem button onClick={() => { setIsMenuOpen(false); navigate(pathKeys.posts.new()); }}>
+                                        Добавить пост
+                                    </ListItem>
+                                    <ListItem button onClick={logoutHandler}>
+                                        Выйти
+                                    </ListItem>
+                                </>
+                            ) : (
+                                <>
+                                    <ListItem button onClick={() => { setIsMenuOpen(false); navigate(pathKeys.login()); }}>
+                                        Войти
+                                    </ListItem>
+                                    <ListItem button onClick={() => { setIsMenuOpen(false); navigate(pathKeys.register()); }}>
+                                        Регистрация
+                                    </ListItem>
+                                </>
                             )}
                         </List>
                     </Drawer>

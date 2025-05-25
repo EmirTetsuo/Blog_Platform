@@ -36,6 +36,19 @@ export const EditPostPage = () => {
     }
 
     const submitHandler = async () => {
+        if (!title.trim()) {
+            toast.error('Заголовок обязателен для заполнения');
+            return;
+        }
+        if (!text.trim()) {
+            toast.error('Текст поста обязателен для заполнения');
+            return;
+        }
+        // Для картинки: если нет нового изображения и нет старого — тоже ошибка
+        if (!newImage && !oldImage) {
+            toast.error('Пожалуйста, добавьте изображение');
+            return;
+        }
         try {
             const updatedPost = new FormData()
             updatedPost.append('title', title)

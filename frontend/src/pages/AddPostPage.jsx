@@ -38,6 +38,20 @@ export const AddPostPage = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault()
+
+        if (!title.trim()) {
+            toast.error('Пожалуйста, введите заголовок поста')
+            return
+        }
+        if (!text.trim()) {
+            toast.error('Пожалуйста, введите содержимое поста')
+            return
+        }
+        if (!image) {
+            toast.error('Пожалуйста, загрузите файл (картинку или видео)')
+            return
+        }
+
         try {
             const data = new FormData()
             data.append('title', title)
