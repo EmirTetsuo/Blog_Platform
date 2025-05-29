@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { updatePost, selectAvailableTags, getAllPosts } from '../shared/slices/post/postSlice'
 import axios from '../shared/api/axios'
 import { toast } from 'react-toastify';
+import { Upload, Trash2, PlusCircle, Tags } from 'lucide-react'
 
 export const EditPostPage = () => {
     const [title, setTitle] = useState('')
@@ -89,20 +90,21 @@ export const EditPostPage = () => {
         >
             <h2 className="text-2xl text-white font-semibold text-center mb-6">Редактировать пост</h2>
 
-            <label className="block text-sm text-gray-300 font-medium mb-4">
-                Прикрепить файл:
-                <div className="relative">
-                    <input
-                        type="file"
-                        className="hidden"
-                        onChange={(e) => {
-                            setNewImage(e.target.files[0])
-                            setOldImage('')
-                        }}
-                    />
-                    <div className="flex items-center justify-center py-6 bg-gray-700 border-2 border-dashed border-gray-500 rounded-lg cursor-pointer hover:bg-gray-600 transition">
-                        <span className="max-md:text-sm text-gray-400 text-lg">Нажмите, чтобы загрузить файл</span>
-                    </div>
+            <label className="block mb-6">
+                <span className="text-gray-300 text-sm font-semibold mb-2 block">Медиафайл:</span>
+                <div className="relative cursor-pointer group">
+                <input
+                    type="file"
+                    className="hidden"
+                    onChange={(e) => {
+                        setNewImage(e.target.files[0])
+                        setOldImage('')
+                    }}
+                />
+                <div className="flex items-center justify-center gap-2 py-4 bg-gray-800 border border-gray-600 rounded-xl group-hover:bg-gray-700 transition">
+                    <Upload className="text-blue-400" />
+                    <span className="text-gray-300 text-sm">Нажмите, чтобы загрузить файл</span>
+                </div>
                 </div>
             </label>
 
@@ -113,7 +115,7 @@ export const EditPostPage = () => {
                             width="100%"
                             height="auto"
                             controls
-                            className="w-32 h-32 object-cover rounded-lg shadow-md"
+                            className="rounded-xl w-32 h-32 object-cover shadow-lg"
                         >
                             <source src={`${API_URL}/${oldImage}`} type="video/mp4" />
                             Ваш браузер не поддерживает видео.
@@ -122,7 +124,7 @@ export const EditPostPage = () => {
                         <img
                             src={`${API_URL}/${oldImage}`}
                             alt={oldImage}
-                            className="w-32 h-32 object-cover rounded-lg shadow-md"
+                            className="rounded-xl w-32 h-32 object-cover shadow-lg"
                         />
                     )
                 )}
@@ -132,7 +134,7 @@ export const EditPostPage = () => {
                             width="100%"
                             height="auto"
                             controls
-                            className="w-32 h-32 object-cover rounded-lg shadow-md"
+                            className="rounded-xl w-32 h-32 object-cover shadow-lg"
                         >
                             <source src={URL.createObjectURL(newImage)} type="video/mp4" />
                             Ваш браузер не поддерживает видео.
@@ -141,46 +143,47 @@ export const EditPostPage = () => {
                         <img
                             src={URL.createObjectURL(newImage)}
                             alt={newImage.name}
-                            className="w-32 h-32 object-cover rounded-lg shadow-md"
+                            className="rounded-xl w-32 h-32 object-cover shadow-lg"
                         />
                     )
                 )}
             </div>
 
-            <label className="block text-sm text-gray-200 opacity-80 mt-4">
-                Заголовок поста:
+            <label className="block mb-6">
+                <span className="text-gray-300 text-sm font-semibold">Заголовок поста:</span>
                 <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Введите заголовок"
-                    className="mt-2 text-black w-full rounded-lg bg-gray-400 py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-700 transition"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Введите заголовок"
+                className="mt-2 w-full rounded-lg bg-gray-800 text-white py-3 px-4 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 />
             </label>
 
             <label className="block text-sm text-gray-200 opacity-80 mt-4">
+                <Tags size={16} />
                 Теги:
                 <div className="relative">
                     <button
                         type="button"
                         onClick={() => setDropdownOpen(!dropdownOpen)}
-                        className="text-black w-full rounded-lg bg-gray-400 py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-700 transition"
+                        className="mt-2 w-full rounded-lg bg-gray-800 text-white py-3 px-4 border border-gray-600 text-left focus:ring-2 focus:ring-blue-500 transition"
                     >
                         {selectedTags.length > 0
                             ? `${selectedTags.length} тег(ов) выбрано`
                             : 'Выберите теги'}
                     </button>
                     {dropdownOpen && (
-                        <div className="absolute opacity-100 mt-2 w-full p-2 bg-black border-2 border-gray-500 rounded-lg shadow-lg z-20">
-                            <div className="max-h-60 opacity-100 overflow-y-auto py-2">
+                        <div className="absolute mt-2 w-full bg-gray-900 border border-gray-600 rounded-xl shadow-lg z-30">
+                            <div className="max-h-60 overflow-y-auto p-2">
                                 {availableTags.map((tag) => (
-                                    <label key={tag} className="block text-gray-200 text-sm">
+                                    <label key={tag} className="flex items-center gap-2 text-gray-200 text-sm px-2 py-1 hover:bg-gray-800 rounded">
                                         <input
                                             type="checkbox"
                                             value={tag}
                                             checked={selectedTags.includes(tag)}
                                             onChange={() => handleTagChange(tag)}
-                                            className="mr-2 h-4 w-4 text-blue-500 border-gray-300 rounded-sm focus:ring-2 focus:ring-blue-500"
+                                            className="accent-blue-500"
                                         />
                                         {tag}
                                     </label>
@@ -191,30 +194,29 @@ export const EditPostPage = () => {
                 </div>
             </label>
 
-            <label className="block text-sm text-gray-200 mt-4">
-                Текст поста:
+            <label className="block mb-6">
+                <span className="text-gray-300 text-sm font-semibold">Содержимое:</span>
                 <textarea
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    placeholder="Введите текст поста"
-                    className="mt-2 text-black w-full rounded-lg bg-gray-400 py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-700 transition"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="Введите содержимое поста"
+                className="mt-2 w-full rounded-lg bg-gray-800 text-white py-3 px-4 border border-gray-600 focus:ring-2 focus:ring-blue-500 transition"
                 />
             </label>
 
             <div className="flex justify-between items-center mt-6">
                 <button
-                    type="button"
-                    onClick={clearFormHandler}
-                    className="max-md:text-sm px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+                type="button"
+                onClick={clearFormHandler}
+                className="flex items-center gap-2 px-5 py-3 text-white bg-red-500 hover:bg-red-600 rounded-lg text-sm transition"
                 >
-                    Очистить
+                <Trash2 size={16} /> Очистить
                 </button>
                 <button
-                    type="submit"
-                    onClick={submitHandler}
-                    className="max-md:text-sm px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                type="submit"
+                className="flex items-center gap-2 px-5 py-3 text-white bg-blue-500 hover:bg-blue-600 rounded-lg text-sm transition"
                 >
-                    Обновить
+                <PlusCircle size={16} /> Обновить
                 </button>
             </div>
         </form>

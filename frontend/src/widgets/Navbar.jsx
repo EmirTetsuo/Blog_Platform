@@ -5,7 +5,16 @@ import { checkIsAuth, logout } from '../shared/slices/auth/authSlice';
 import { toast } from 'react-toastify';
 import { FaBars, FaSignOutAlt } from 'react-icons/fa';
 import { pathKeys } from '../shared/router/config';
-import { Drawer, List, ListItem } from '@mui/material';
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Divider,
+  Typography,
+  Box
+} from '@mui/material';
 import avatarImg from "../shared/assets/img/User-avatar.png";
 
 export const Navbar = () => {
@@ -137,33 +146,53 @@ export const Navbar = () => {
 
                 {isMobile && isMenuOpen && (
                     <Drawer anchor="right" open={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
-                        <List sx={{ width: 250 }}>
+                        <Box sx={{ width: 280, py: 2 }}>
+                            <List>
                             {isAuth ? (
                                 <>
-                                    <ListItem button onClick={() => { setIsMenuOpen(false); navigate(pathKeys.posts.root()); }}>
-                                        Мой Профиль
-                                    </ListItem>
-                                    <ListItem button onClick={() => { setIsMenuOpen(false); navigate('/'); }}>
-                                        Главная
-                                    </ListItem>
-                                    <ListItem button onClick={() => { setIsMenuOpen(false); navigate(pathKeys.posts.new()); }}>
-                                        Добавить пост
-                                    </ListItem>
-                                    <ListItem button onClick={logoutHandler}>
-                                        Выйти
-                                    </ListItem>
+                                <ListItem disablePadding>
+                                    <ListItemButton onClick={() => { setIsMenuOpen(false); navigate(pathKeys.posts.root()); }}>
+                                    <ListItemText primary="Мой Профиль" />
+                                    </ListItemButton>
+                                </ListItem>
+
+                                <ListItem disablePadding>
+                                    <ListItemButton onClick={() => { setIsMenuOpen(false); navigate('/'); }}>
+                                    <ListItemText primary="Главная" />
+                                    </ListItemButton>
+                                </ListItem>
+
+                                <ListItem disablePadding>
+                                    <ListItemButton onClick={() => { setIsMenuOpen(false); navigate(pathKeys.posts.new()); }}>
+                                    <ListItemText primary="Добавить пост" />
+                                    </ListItemButton>
+                                </ListItem>
+
+                                <Divider sx={{ my: 1 }} />
+
+                                <ListItem disablePadding>
+                                    <ListItemButton onClick={() => { setIsMenuOpen(false); logoutHandler(); }}>
+                                    <ListItemText primary="Выйти" />
+                                    </ListItemButton>
+                                </ListItem>
                                 </>
                             ) : (
                                 <>
-                                    <ListItem button onClick={() => { setIsMenuOpen(false); navigate(pathKeys.login()); }}>
-                                        Войти
-                                    </ListItem>
-                                    <ListItem button onClick={() => { setIsMenuOpen(false); navigate(pathKeys.register()); }}>
-                                        Регистрация
-                                    </ListItem>
+                                <ListItem disablePadding>
+                                    <ListItemButton onClick={() => { setIsMenuOpen(false); navigate(pathKeys.login()); }}>
+                                    <ListItemText primary="Войти" />
+                                    </ListItemButton>
+                                </ListItem>
+
+                                <ListItem disablePadding>
+                                    <ListItemButton onClick={() => { setIsMenuOpen(false); navigate(pathKeys.register()); }}>
+                                    <ListItemText primary="Регистрация" />
+                                    </ListItemButton>
+                                </ListItem>
                                 </>
                             )}
-                        </List>
+                            </List>
+                        </Box>
                     </Drawer>
                 )}
             </div>

@@ -33,11 +33,11 @@ export const MainPage = () => {
                 dispatch(getAllPosts({ searchQuery: query, page: 1 }));
             }
         }
-
     };
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
+        window.scrollTo({ top: 0, behavior: 'smooth' }); 
         if (activeTag) {
             dispatch(getPostsByTag({ tag: activeTag, searchQuery, page: newPage }));
         } else {

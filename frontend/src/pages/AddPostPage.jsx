@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { createPost, selectAvailableTags, getAllPosts } from '../shared/slices/post/postSlice'
 import { toast } from 'react-toastify';
+import { Upload, Trash2, PlusCircle, Tags } from 'lucide-react'
 
 export const AddPostPage = () => {
     const [title, setTitle] = useState('')
@@ -106,118 +107,105 @@ export const AddPostPage = () => {
 
     return (
         <form
-            className="max-w-xl mx-auto py-8 px-10 bg-gray-800 rounded-lg shadow-lg"
+            className="max-w-2xl mx-auto py-10 px-8 bg-gray-900 rounded-2xl shadow-2xl border border-gray-700"
             onSubmit={submitHandler}
-        >
-            <h2 className="text-2xl text-white font-semibold text-center mb-6">
-                Создать новый пост
-            </h2>
+            >
+            <h2 className="text-3xl font-bold text-white text-center mb-8">Создать новый пост</h2>
 
-            <label className="block text-sm text-gray-300 font-medium max-md:mb-2 mb-4">
-                Прикрепить файл:
-                <div className="relative">
-                    <input
-                        type="file"
-                        className="hidden"
-                        onChange={handleFileChange}
-                    />
-                    <div className="flex items-center justify-center py-6 bg-gray-700 border-2 border-dashed border-gray-500 rounded-lg cursor-pointer hover:bg-gray-600 transition">
-                        <span className="max-md:text-sm text-gray-400 text-lg">
-                            Нажмите, чтобы загрузить файл
-                        </span>
-                    </div>
+            <label className="block mb-6">
+                <span className="text-gray-300 text-sm font-semibold mb-2 block">Медиафайл:</span>
+                <div className="relative cursor-pointer group">
+                <input type="file" className="hidden" onChange={handleFileChange} />
+                <div className="flex items-center justify-center gap-2 py-4 bg-gray-800 border border-gray-600 rounded-xl group-hover:bg-gray-700 transition">
+                    <Upload className="text-blue-400" />
+                    <span className="text-gray-300 text-sm">Нажмите, чтобы загрузить файл</span>
+                </div>
                 </div>
             </label>
 
-            <div className="flex justify-center py-2">
-                {image && (
-                    isVideo(image.name) ? (
-                        <video
-                            width="100%"
-                            height="auto"
-                            controls
-                            className="w-32 h-32 object-cover rounded-lg shadow-md"
-                        >
-                            <source src={URL.createObjectURL(image)} type="video/mp4" />
-                            Ваш браузер не поддерживает видео.
-                        </video>
-                    ) : (
-                        <img
-                            src={URL.createObjectURL(image)}
-                            alt={image.name}
-                            className="w-32 h-32 object-cover rounded-lg shadow-md"
-                        />
-                    )
+            {image && (
+                <div className="flex justify-center py-4">
+                {isVideo(image.name) ? (
+                    <video controls className="rounded-xl w-48 h-48 object-cover shadow-lg">
+                    <source src={URL.createObjectURL(image)} type="video/mp4" />
+                    Ваш браузер не поддерживает видео.
+                    </video>
+                ) : (
+                    <img
+                    src={URL.createObjectURL(image)}
+                    alt={image.name}
+                    className="rounded-xl w-48 h-48 object-cover shadow-lg"
+                    />
                 )}
-            </div>
+                </div>
+            )}
 
-            <label className="block text-sm text-gray-200 opacity-80">
-                Заголовок поста:
+            <label className="block mb-6">
+                <span className="text-gray-300 text-sm font-semibold">Заголовок поста:</span>
                 <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Введите заголовок"
-                    className="mt-2 text-black w-full rounded-lg bg-gray-400 py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-700 transition"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Введите заголовок"
+                className="mt-2 w-full rounded-lg bg-gray-800 text-white py-3 px-4 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 />
             </label>
 
-            <label className="block text-sm text-gray-200 opacity-80 mt-4">
+            <label className="block mb-6 relative" ref={dropdownRef}>
+                <span className="text-gray-300 text-sm font-semibold flex items-center gap-1">
+                <Tags size={16} />
                 Теги:
-                <div className="relative" ref={dropdownRef}>
-                    <button
-                        type="button"
-                        onClick={() => setDropdownOpen(!dropdownOpen)}
-                        className="text-black w-full rounded-lg bg-gray-400 py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-700 transition"
-                    >
-                        {selectedTags.length > 0
-                            ? `Выбрано тегов: ${selectedTags.length}`
-                            : 'Выберите теги'}
-                    </button>
-                    {dropdownOpen && (
-                        <div className="absolute opacity-100 mt-2 w-full p-2 bg-black border-2 border-gray-500 rounded-lg shadow-lg z-20">
-                            <div className="max-h-60 overflow-y-auto py-2">
-                                {availableTags.map((tag) => (
-                                    <label key={tag} className="block text-gray-200 text-sm">
-                                        <input
-                                            type="checkbox"
-                                            value={tag}
-                                            checked={selectedTags.includes(tag)}
-                                            onChange={handleTagChange}
-                                            className="mr-2 h-4 w-4 text-blue-500 border-gray-300 rounded-sm focus:ring-2 focus:ring-blue-500"
-                                        />
-                                        {tag}
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
-                    )}
+                </span>
+                <button
+                type="button"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="mt-2 w-full rounded-lg bg-gray-800 text-white py-3 px-4 border border-gray-600 text-left focus:ring-2 focus:ring-blue-500 transition"
+                >
+                {selectedTags.length > 0 ? `Выбрано: ${selectedTags.length}` : 'Выберите теги'}
+                </button>
+                {dropdownOpen && (
+                <div className="absolute mt-2 w-full bg-gray-900 border border-gray-600 rounded-xl shadow-lg z-30">
+                    <div className="max-h-60 overflow-y-auto p-2">
+                    {availableTags.map((tag) => (
+                        <label key={tag} className="flex items-center gap-2 text-gray-200 text-sm px-2 py-1 hover:bg-gray-800 rounded">
+                        <input
+                            type="checkbox"
+                            value={tag}
+                            checked={selectedTags.includes(tag)}
+                            onChange={handleTagChange}
+                            className="accent-blue-500"
+                        />
+                        {tag}
+                        </label>
+                    ))}
+                    </div>
                 </div>
+                )}
             </label>
 
-            <label className="block text-sm text-gray-200 mt-4">
-                Содержимое:
+            <label className="block mb-6">
+                <span className="text-gray-300 text-sm font-semibold">Содержимое:</span>
                 <textarea
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    placeholder="Введите содержимое поста"
-                    className="mt-2 text-black w-full rounded-lg bg-gray-400 py-3 px-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-700 transition"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="Введите содержимое поста"
+                className="mt-2 w-full rounded-lg bg-gray-800 text-white py-3 px-4 border border-gray-600 focus:ring-2 focus:ring-blue-500 transition"
                 />
             </label>
 
             <div className="flex justify-between items-center mt-6">
                 <button
-                    type="button"
-                    onClick={clearFormHandler}
-                    className="max-md:text-sm px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+                type="button"
+                onClick={clearFormHandler}
+                className="flex items-center gap-2 px-5 py-3 text-white bg-red-500 hover:bg-red-600 rounded-lg text-sm transition"
                 >
-                    Очистить
+                <Trash2 size={16} /> Очистить
                 </button>
                 <button
-                    type="submit"
-                    className="max-md:text-sm px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                type="submit"
+                className="flex items-center gap-2 px-5 py-3 text-white bg-blue-500 hover:bg-blue-600 rounded-lg text-sm transition"
                 >
-                    Создать пост
+                <PlusCircle size={16} /> Создать пост
                 </button>
             </div>
         </form>

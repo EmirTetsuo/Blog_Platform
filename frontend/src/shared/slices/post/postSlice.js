@@ -5,7 +5,7 @@ const initialState = {
     posts: [],
     popularPosts: [],
     loading: false,
-    availableTags: ['Anime', 'Movie', 'Lifestyle', 'Gaming', 'Education', 'Food', 'Travel'],
+    availableTags: ['Anime', 'Movie', 'Lifestyle', 'Gaming', 'Education', 'Food', 'Travel', 'School', 'Sport', 'Art', 'Comics'],
     totalPostsCount: 0, 
 }
 

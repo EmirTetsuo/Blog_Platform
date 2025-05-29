@@ -1,0 +1,6 @@
+node modules
+dist
+.git
+.md
+Dockerfile
+.dockerfileIgnore
