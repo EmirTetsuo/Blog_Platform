@@ -4,15 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Upload, ArrowLeft } from 'lucide-react';
-const API_URL = process.env.REACT_APP_API_URL;
-
 export const UpdateUser = () => {
     const [newAvatar, setNewAvatar] = useState('');
     const [newUsername, setNewUsername] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { user, token } = useSelector((state) => state.auth);
-
+    const API_URL = process.env.REACT_APP_API_URL;
+    const getFullUrl = (url) => {
+        if (!url) return '';
+        return url.startsWith('http') ? url : `${API_URL}/${url}`;
+    };
+    
     const fetchUser = useCallback(async () => {
         setNewAvatar(user?.imgUrl)
         setNewUsername(user?.username)
@@ -81,7 +84,7 @@ export const UpdateUser = () => {
                         <img
                             src={
                                 typeof newAvatar === 'string'
-                                ? `${API_URL}/${newAvatar}`
+                                ? getFullUrl(newAvatar)
                                 : URL.createObjectURL(newAvatar)
                             }
                             alt="Preview"

@@ -4,12 +4,15 @@ import avatarImg from "../shared/assets/img/User-avatar.png";
 
 export const CommentItem = ({ cmt }) => {
     const API_URL = process.env.REACT_APP_API_URL;
-
+    const getFullUrl = (url) => {
+        if (!url) return '';
+        return url.startsWith('http') ? url : `${API_URL}/${url}`;
+    };
     return (
         <div className="flex items-center gap-4 max-md:p-1 p-3 hover:bg-gray-800 rounded-lg transition-all duration-200">
             <div className="flex items-center w-12 h-12">
                 <img
-                    src={cmt?.authorAvatar ? `${API_URL}/${cmt.authorAvatar}` : avatarImg} 
+                    src={cmt?.authorAvatar ? getFullUrl(cmt.authorAvatar): avatarImg} 
                     alt=''
                     className="w-10 h-10 rounded-full object-cover"
                 />

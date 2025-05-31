@@ -6,6 +6,10 @@ export const PostItemContent = ({ post }) => {
     const [isMuted, setIsMuted] = useState(false);
     const [userWantsToPlay, setUserWantsToPlay] = useState(false);
     const API_URL = process.env.REACT_APP_API_URL;
+    const getFullUrl = (url) => {
+        if (!url) return '';
+        return url.startsWith('http') ? url : `${API_URL}/${url}`;
+    };
     const [isEnded, setIsEnded] = useState(false);
 
     const videoRef = useRef(null);
@@ -110,7 +114,7 @@ export const PostItemContent = ({ post }) => {
                         }}
                         className="object-cover w-full max-md:max-h-[250px] max-h-[500px]"
                     >
-                        <source src={`${API_URL}/${post.imgUrl}`} type="video/mp4" />
+                        <source src={getFullUrl(post.imgUrl)} type="video/mp4" />
                         Ваш браузер не поддерживает видео.
                     </video>
 
@@ -142,7 +146,8 @@ export const PostItemContent = ({ post }) => {
                 </div>
             ) : (
                 <img
-                    src={`${API_URL}/${post.imgUrl}`}
+                    src={getFullUrl(post.imgUrl)}
+
                     alt="Post content"
                     className="object-cover w-full h-full max-md:max-h-[250px] max-h-[500px]"
                 />

@@ -26,7 +26,10 @@ export const Navbar = () => {
     const menuRef = useRef(null);
     const { user } = useSelector((state) => state.auth); 
     const API_URL = process.env.REACT_APP_API_URL;
-
+    const getFullUrl = (url) => {
+        if (!url) return '';
+        return url.startsWith('http') ? url : `${API_URL}/${url}`;
+    };
     const handleResize = () => {
         setIsMobile(window.innerWidth <= 720);
     };
@@ -113,7 +116,7 @@ export const Navbar = () => {
                                     onClick={handleLinkClick}
                                 >
                                     <img 
-                                        src={user?.imgUrl ? `${API_URL}/${user.imgUrl}` : avatarImg} 
+                                        src={user?.imgUrl ? getFullUrl(user.imgUrl) : avatarImg} 
                                         alt=''
                                         className="w-10 h-10 rounded-full object-cover"
                                     />

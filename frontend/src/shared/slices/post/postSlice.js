@@ -21,7 +21,6 @@ export const createPost = createAsyncThunk(
     },
 )
 
-
 // Получение всех постов с поисковым запросом
 export const getAllPosts = createAsyncThunk('post/getAllPosts', async ({ searchQuery, page }) => {
     try {

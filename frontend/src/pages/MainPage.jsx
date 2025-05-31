@@ -48,7 +48,6 @@ export const MainPage = () => {
     const currentPosts = posts;
 
     const totalPages = Math.ceil(totalPostsCount / postsPerPage);
-    console.log(totalPages, postsPerPage, totalPostsCount);
 
     useEffect(() => {
         if (activeTag) {

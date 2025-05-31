@@ -8,6 +8,7 @@ import { getAllComments, removeCommentFromAdmin } from '../shared/slices/comment
 import { toast } from 'react-toastify';
 import { checkIsAuth, getMe, getAllUsers, removeUserFromAdmin } from '../shared/slices/auth/authSlice';
 import { DashBoardSideBar } from '../widgets/DashBoardSideBar';
+import { PostCard } from '../widgets/PostCard';
 
 export const DashBoard = () => {
   const dispatch = useDispatch();
@@ -108,24 +109,25 @@ export const DashBoard = () => {
         )}
 
         {activeSection === 'posts' && (
-          <div className="max-md:gap-4 gap-6">
+          <div className="grid grid-cols-3 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {posts?.map((post, idx) => (
-              <div 
-                key={idx} 
-                className=""
+              <div
+                key={idx}
+                className="bg-gray-900 border border-gray-700 rounded-2xl p-4 shadow-xl hover:shadow-2xl transition-shadow duration-300"
               >
-                <PostItem post={post} />
+                <PostCard post={post} />
+
                 <button
                   onClick={() => removePostHandler(post._id)}
-                  className="max-md:text-sm flex w-full items-center justify-center p-2 mt-2 bg-gray-700 rounded-full text-gray-200 
-                  hover:bg-red-100 hover:text-red-600 transition-all shadow focus:outline-none focus:ring-2 focus:ring-red-400"
+                  className="flex items-center justify-center gap-2 w-full mt-4 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-full 
+                            hover:bg-red-700 active:scale-95 transition-all duration-200 shadow-md focus:outline-none focus:ring-2 focus:ring-red-400"
                 >
-                  Delete Post
-                  <AiFillDelete size={20} />
+                  <AiFillDelete size={18} />
+                  Удалить пост
                 </button>
               </div>
             ))}
-        </div>
+          </div>
         )}
 
         {activeSection === 'users' && (

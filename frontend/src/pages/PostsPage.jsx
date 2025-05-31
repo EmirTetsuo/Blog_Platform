@@ -6,52 +6,14 @@ import { FaPen } from 'react-icons/fa';
 import { pathKeys } from '../shared/router/config';
 import avatarImg from "../shared/assets/img/User-avatar.png";
 import { CircularProgress, Typography } from "@mui/material";
+import { PostCard } from '../widgets/PostCard';
 
 const API_URL = process.env.REACT_APP_API_URL;
-
-const renderLoading = <Typography className="flex justify-center items-center h-64"><CircularProgress /></Typography>;
-
-
-const PostCard = ({ post }) => {
-  const isVideo = (url) => {
-    if (!url || typeof url !== 'string') return false;
-    const videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'mkv', 'webm', 'flv', 'ogg'];
-    return videoExtensions.some(ext => url.endsWith(ext));
-  };
-
-  if (!post?.imgUrl) {
-    return (
-      <div className="flex items-center justify-center h-48 w-full rounded-lg border-2 border-gray-600 text-white">
-        Нет изображения
-      </div>
-    );
-  }
-
-  const content = isVideo(post.imgUrl) ? (
-    <video
-      width="100%"
-      height="100%"
-      className="object-cover w-full h-full"
-      muted
-      loop
-    >
-      <source src={`${API_URL}/${post.imgUrl}`} type={`video/${post.imgUrl.split('.').pop()}`} />
-      Ваш браузер не поддерживает видео.
-    </video>
-  ) : (
-    <img
-      src={`${API_URL}/${post.imgUrl}`}
-      alt="Post content"
-      className="object-cover w-full h-full"
-    />
-  );
-
-  return (
-    <Link to={pathKeys.posts.byId(post._id)} className="block relative max-sm:h-[120px] h-[250px] w-full rounded-lg overflow-hidden border-2 border-gray-600 shadow-lg hover:shadow-xl transition-shadow duration-300">
-      {content}
-    </Link>
-  );
+const getFullUrl = (url) => {
+    if (!url) return '';
+    return url.startsWith('http') ? url : `${API_URL}/${url}`;
 };
+const renderLoading = <Typography className="flex justify-center items-center h-64"><CircularProgress /></Typography>;
 
 export const PostsPage = () => {
   const [posts, setPosts] = useState([]);
@@ -93,7 +55,7 @@ export const PostsPage = () => {
       <div className="flex items-center mb-8 space-x-4">
         <Link to={pathKeys.updateUser()} className="relative group">
           <img
-            src={user?.imgUrl ? `${API_URL}/${user.imgUrl}` : avatarImg}
+            src={user?.imgUrl ?  getFullUrl(user.imgUrl) : avatarImg} 
             alt="User Avatar"
             className="w-24 h-24 rounded-full object-cover border-4 border-gray-700 cursor-pointer transform transition duration-300 ease-in-out hover:scale-105 hover:opacity-90"
           />

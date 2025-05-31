@@ -11,7 +11,7 @@ export const AddPostPage = () => {
     const [image, setImage] = useState('')
     const [selectedTags, setSelectedTags] = useState([])
     const [dropdownOpen, setDropdownOpen] = useState(false)
-
+    const [loading, setLoading] = useState(false)
     const availableTags = useSelector(selectAvailableTags)
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -40,6 +40,7 @@ export const AddPostPage = () => {
     const submitHandler = async (e) => {
         e.preventDefault()
 
+        if (loading) return 
         if (!title.trim()) {
             toast.error('Пожалуйста, введите заголовок поста')
             return
@@ -54,10 +55,11 @@ export const AddPostPage = () => {
         }
 
         try {
+            setLoading(true)
             const data = new FormData()
             data.append('title', title)
             data.append('text', text)
-            data.append('image', image)
+            data.append('media', image)
             data.append('tags', selectedTags.join(','))
 
             await dispatch(createPost(data))
@@ -70,6 +72,8 @@ export const AddPostPage = () => {
             navigate('/')
         } catch (error) {
             console.log(error)
+        } finally {
+            setLoading(false)
         }
     }
 

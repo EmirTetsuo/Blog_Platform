@@ -20,8 +20,11 @@ app.use(cors({
     credentials: true,
 }));
 
-app.use(fileUpload())
+app.use(fileUpload({
+  useTempFiles: true,
+}));
 app.use(express.json())
+
 app.use(express.static('uploads'))
 app.use('/uploads', express.static('uploads'));
 
@@ -42,6 +45,7 @@ async function start() {
         console.log('mongDb connected')
 
         app.listen(PORT, () => console.log(`Server started on port: ${PORT}`))
+        
     } catch (error) {
         console.log(error)
     }

@@ -16,7 +16,10 @@ export const PostItemTop = ({ post }) => {
     const userId = user?._id;
     const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
     const API_URL = process.env.REACT_APP_API_URL;
-
+    const getFullUrl = (url) => {
+        if (!url) return '';
+        return url.startsWith('http') ? url : `${API_URL}/${url}`;
+    };
     const removePostHandler = async () => {
         try {
             // Отправляем запрос на сервер для удаления поста
@@ -49,7 +52,7 @@ export const PostItemTop = ({ post }) => {
             <div className="flex justify-between items-center">
                 <div className='flex items-center gap-2'>
                     <img
-                        src={post?.authorAvatar ? `${API_URL}/${post.authorAvatar}` : AvatarImg}
+                        src={post?.authorAvatar ? getFullUrl(post.authorAvatar) : AvatarImg}
                         alt="Author avatar"
                         className="w-10 h-10 rounded-full object-cover"
                     />

@@ -1,7 +1,7 @@
 import User from '../models/User.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import fileUpload from 'express-fileupload'
+import cloudinary from '../utils/cloudinary.js'
 import Post from '../models/Post.js';
 import Comment from "../models/Comment.js" 
 
@@ -172,66 +172,65 @@ export const removeUserFromAdmin = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const { avatar } = req.files || {};  // Get the avatar file if present
-        const { username } = req.body || {};  // Get the new username from body
-
         const { userId } = req;
+        const { username } = req.body || {};
 
-        // If neither avatar nor username is provided, return error
-        if (!avatar && !username) {
-            return res.status(400).json({ message: 'No avatar or username provided' });
-        }
-
-        // Find the user by their ID
+        // Найти пользователя по id
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Check if username is already taken
+        // Проверить, что либо аватар, либо имя переданы
+        if (!req.files?.avatar && !username) {
+            return res.status(400).json({ message: 'No avatar or username provided' });
+        }
+
+        // Проверка, занят ли username (если обновляется)
         if (username && username !== user.username) {
             const isUsernameUsed = await User.findOne({ username });
             if (isUsernameUsed) {
                 return res.status(400).json({ message: 'Данный username уже занят.' });
             }
-        }
-
-        // If avatar is provided, upload it and update the user's imgUrl
-        if (avatar) {
-            const avatarPath = `avatars/${Date.now()}-${avatar.name}`;
-            await avatar.mv(`./uploads/${avatarPath}`);
-            user.imgUrl = avatarPath;  // Update the avatar URL in the user's data
-        }
-
-        // If username is provided, update it
-        if (username) {
             user.username = username;
+        }
+
+        // Если есть файл аватара — загружаем на Cloudinary
+        if (req.files?.avatar) {
+            const file = req.files.avatar;
+            const result = await cloudinary.uploader.upload(file.tempFilePath || file.data, {
+                folder: 'blog_users',
+                resource_type: 'auto',
+            });
+            user.imgUrl = result.secure_url;
         }
 
         await user.save();
 
+        // Обновить username и avatar в постах и комментариях
         await Post.updateMany(
-            { author: userId },  // Find all posts by this user
-            {  
-                $set: { 
-                    authorAvatar: user.imgUrl || user.authorAvatar,  // Update avatar in posts
-                    username: user.username  // Update username in posts
-                }
+            { author: userId },
+            {
+                $set: {
+                    authorAvatar: user.imgUrl,
+                    username: user.username,
+                },
             }
         );
+
         await Comment.updateMany(
-            { author: userId },  // Find all comments by this user
-            {  
-                $set: { 
-                    authorAvatar: user.imgUrl || user.authorAvatar,  // Update avatar in comments
-                    username: user.username  // Update username in comments
-                }
+            { author: userId },
+            {
+                $set: {
+                    authorAvatar: user.imgUrl,
+                    username: user.username,
+                },
             }
         );
 
         res.json({ message: 'Avatar and/or username updated successfully', user });
     } catch (error) {
-        console.error('Error updating avatar and username:', error.message);
+        console.error('Error updating avatar and username:', error);
         res.status(500).json({ message: 'Server error' });
     }
 };

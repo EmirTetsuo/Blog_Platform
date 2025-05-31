@@ -3,6 +3,7 @@ import User from '../models/User.js'
 import Comment from '../models/Comment.js'
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url'
+import cloudinary from '../utils/cloudinary.js'
 
 // Create Post
 export const createPost = async (req, res) => {
@@ -10,45 +11,41 @@ export const createPost = async (req, res) => {
         const { title, text, tags } = req.body
         const user = await User.findById(req.userId)
 
-        if (req.files) {
-            let fileName = Date.now().toString() + req.files.image.name
-            const __dirname = dirname(fileURLToPath(import.meta.url))
-            req.files.image.mv(path.join(__dirname, '..', 'uploads', fileName))
+        let mediaUrl = ''
+        let mediaType = ''
 
-            const newPostWithImage = new Post({
-                authorAvatar: user.imgUrl,
-                username: user.username,
-                title,
-                text,
-                imgUrl: fileName,
-                tags: tags ? tags.split(',') : [], 
-                author: req.userId,
+        if (req.files && req.files.media) {
+            const file = req.files.media
+
+            const result = await cloudinary.uploader.upload(file.tempFilePath || file.data, {
+                folder: 'blog_posts',
+                resource_type: 'auto', // позволяет загружать и видео, и изображения
             })
 
-            await newPostWithImage.save()
-            await User.findByIdAndUpdate(req.userId, {
-                $push: { posts: newPostWithImage },
-            })
-
-            return res.json(newPostWithImage)
+            mediaUrl = result.secure_url
+            mediaType = result.resource_type // image | video
         }
 
-        const newPostWithoutImage = new Post({
+        const newPost = new Post({
             authorAvatar: user.imgUrl,
             username: user.username,
             title,
             text,
-            imgUrl: '',
+            imgUrl: mediaUrl,
+            mediaType,
             tags: tags ? tags.split(',') : [],
             author: req.userId,
         })
-        await newPostWithoutImage.save()
+
+        await newPost.save()
         await User.findByIdAndUpdate(req.userId, {
-            $push: { posts: newPostWithoutImage },
+            $push: { posts: newPost },
         })
-        res.json(newPostWithoutImage)
+
+        res.json(newPost)
     } catch (error) {
-        res.json({ message: 'Что-то пошло не так.' })
+        console.error('Ошибка createPost:', error)
+        res.status(500).json({ message: 'Ошибка при создании поста.' })
     }
 }
 
@@ -164,28 +161,43 @@ export const getAllPostsNoParams = async (req, res) => {
 export const updatePost = async (req, res) => {
     try {
         const { title, text, tags, id } = req.body;
-        const post = await Post.findById(id)
+        const post = await Post.findById(id);
 
-        if (req.files) {
-            let fileName = Date.now().toString() + req.files.image.name
-            const __dirname = dirname(fileURLToPath(import.meta.url))
-            req.files.image.mv(path.join(__dirname, '..', 'uploads', fileName))
-            post.imgUrl = fileName || ''
+        if (!post) {
+            return res.status(404).json({ message: 'Пост не найден' });
         }
 
-        post.title = title
-        post.text = text
-        if (tags) {
-            post.tags = tags.split(','); 
+        let mediaUrl = post.imgUrl || '';
+        let mediaType = post.mediaType || '';
+
+        // Если пришло новое медиа — загружаем в Cloudinary
+        if (req.files && req.files.media) {
+            const file = req.files.media;
+
+            // Загружаем в Cloudinary, resource_type 'auto' позволяет видео и изображения
+            const result = await cloudinary.uploader.upload(file.tempFilePath || file.data, {
+                folder: 'blog_posts',
+                resource_type: 'auto',
+            });
+
+            mediaUrl = result.secure_url;
+            mediaType = result.resource_type;
         }
 
-        await post.save()
+        post.title = title;
+        post.text = text;
+        post.imgUrl = mediaUrl;
+        post.mediaType = mediaType;
+        post.tags = tags ? tags.split(',') : [];
 
-        res.json(post)
+        await post.save();
+
+        res.json(post);
     } catch (error) {
-        res.json({ message: 'Что-то пошло не так.' })
+        console.error('Ошибка updatePost:', error);
+        res.status(500).json({ message: 'Ошибка при обновлении поста.' });
     }
-}
+};
 
 // Get Post Comments
 export const getPostComments = async (req, res) => {

@@ -14,7 +14,10 @@ export const EditPostPage = () => {
     const [selectedTags, setSelectedTags] = useState([])
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const API_URL = process.env.REACT_APP_API_URL;
-
+    const getFullUrl = (url) => {
+        if (!url) return '';
+        return url.startsWith('http') ? url : `${API_URL}/${url}`;
+    };
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const params = useParams()
@@ -55,7 +58,7 @@ export const EditPostPage = () => {
             updatedPost.append('title', title)
             updatedPost.append('text', text)
             updatedPost.append('id', params.id)
-            updatedPost.append('image', newImage)
+            updatedPost.append('media', newImage)
             updatedPost.append('tags', selectedTags.join(','))
             await dispatch(updatePost(updatedPost))
             toast.success('Пост успешно редактирован!');
@@ -117,12 +120,12 @@ export const EditPostPage = () => {
                             controls
                             className="rounded-xl w-32 h-32 object-cover shadow-lg"
                         >
-                            <source src={`${API_URL}/${oldImage}`} type="video/mp4" />
+                            <source src={getFullUrl(oldImage)} type="video/mp4" />
                             Ваш браузер не поддерживает видео.
                         </video>
                     ) : (
                         <img
-                            src={`${API_URL}/${oldImage}`}
+                            src={getFullUrl(oldImage)}
                             alt={oldImage}
                             className="rounded-xl w-32 h-32 object-cover shadow-lg"
                         />
