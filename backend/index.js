@@ -14,10 +14,20 @@ dotenv.config()
 // Constants
 const PORT = process.env.PORT || 3001
 
-// Middleware
+const allowedOrigins = [
+  'https://pblogmarket.netlify.app',
+  'http://localhost:3000'
+];
+
 app.use(cors({
-    origin: process.env.REACT_APP_FRONT_URL, 
-    credentials: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true,
 }));
 
 app.use(fileUpload({
