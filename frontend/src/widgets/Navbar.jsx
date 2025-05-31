@@ -94,7 +94,7 @@ export const Navbar = () => {
                             Добавить пост
                         </NavLink>
                     </li>
-                    {user?.username == 'Admin' && (
+                    {user?.username === 'Admin' && (
                         <li>
                             <NavLink
                                 to={pathKeys.dashboard()}
@@ -183,7 +183,7 @@ export const Navbar = () => {
 
                                 <Divider sx={{ my: 1 }} />
 
-                                {user?.username == 'Admin' && (
+                                {user?.username === 'Admin' && (
                                     <ListItem disablePadding>
                                         <ListItemText>
                                             <NavLink
