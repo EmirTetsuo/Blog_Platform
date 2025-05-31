@@ -19,7 +19,7 @@ export const UpdateUser = () => {
     const fetchUser = useCallback(async () => {
         setNewAvatar(user?.imgUrl)
         setNewUsername(user?.username)
-    }, [])
+    }, [user?.imgUrl, user?.username]);
 
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
