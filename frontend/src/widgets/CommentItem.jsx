@@ -17,11 +17,12 @@ export const CommentItem = ({ cmt }) => {
             
             <div className="flex justify-between w-full">
                 <div className="text-gray-200 max-sm:text-xs text-sm leading-relaxed">
-                    <strong>{cmt.username}</strong> {/* Display the author's username */}
+                    <strong>{cmt.username}</strong> 
                     <p>{cmt.comment}</p>
                 </div>
                 <Moment date={cmt.createdAt} format="DD.MM.YYYY" className="text-gray-500 text-xs" />
-                </div>
+            </div>
+            
         </div>
     )
 }

@@ -33,7 +33,8 @@ export const MainPageSideBar = ({ searchQuery, activeTag, setActiveTag, page, se
     }, [dispatch, activeTag, searchQuery, page]);
 
     return (
-        <div className='w-[70%] max-md:w-full'>
+        <div className='sticky top-20 self-start w-[70%] r-0 max-md:relative max-md:top-0 max-md:w-full'>
+
             <div className='text-sm font-semibold text-gray-400 mb-6'>
                 <span className='uppercase tracking-wider text-white'>Популярное:</span>
             </div>

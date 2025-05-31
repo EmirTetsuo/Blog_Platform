@@ -86,10 +86,10 @@ export const DashBoard = () => {
   
 
   return (
-    <div className="flex">
+    <div className="">
       <DashBoardSideBar setActiveSection={setActiveSection}/>
 
-      <div className="flex-1 bg-gray-100 p-6 overflow-y-auto min-h-screen">
+      <div className="bg-gray-100 p-6 overflow-y-auto min-h-screen">
         {activeSection === 'overview' && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-md shadow-lg">

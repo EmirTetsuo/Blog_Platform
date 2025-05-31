@@ -10,7 +10,7 @@ export const MainPage = () => {
     const dispatch = useDispatch();
     const { posts, totalPostsCount } = useSelector((state) => state.post);
     const [activeTag, setActiveTag] = useState(null);
-    const postsPerPage = 5;
+    const postsPerPage = 7;
     const [searchQuery, setSearchQuery] = useState('');
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
@@ -48,6 +48,7 @@ export const MainPage = () => {
     const currentPosts = posts;
 
     const totalPages = Math.ceil(totalPostsCount / postsPerPage);
+    console.log(totalPages, postsPerPage, totalPostsCount);
 
     useEffect(() => {
         if (activeTag) {

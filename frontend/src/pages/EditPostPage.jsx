@@ -19,7 +19,7 @@ export const EditPostPage = () => {
     const navigate = useNavigate()
     const params = useParams()
     const availableTags = useSelector(selectAvailableTags)
-
+ 
     const fetchPost = useCallback(async () => {
         const { data } = await axios.get(`/posts/${params.id}`)
         setTitle(data.title)
@@ -206,17 +206,18 @@ export const EditPostPage = () => {
 
             <div className="flex justify-between items-center mt-6">
                 <button
-                type="button"
-                onClick={clearFormHandler}
-                className="flex items-center gap-2 px-5 py-3 text-white bg-red-500 hover:bg-red-600 rounded-lg text-sm transition"
-                >
-                <Trash2 size={16} /> Очистить
+                    type="button"
+                    onClick={clearFormHandler}
+                    className="flex items-center gap-2 px-5 py-3 text-white bg-red-500 hover:bg-red-600 rounded-lg text-sm transition"
+                    >
+                    <Trash2 size={16} /> Очистить
                 </button>
                 <button
-                type="submit"
-                className="flex items-center gap-2 px-5 py-3 text-white bg-blue-500 hover:bg-blue-600 rounded-lg text-sm transition"
-                >
-                <PlusCircle size={16} /> Обновить
+                    type="submit"
+                    className="flex items-center gap-2 px-5 py-3 text-white bg-blue-500 hover:bg-blue-600 rounded-lg text-sm transition"
+                    onClick={submitHandler}
+                    >
+                    <PlusCircle size={16} /> Обновить
                 </button>
             </div>
         </form>

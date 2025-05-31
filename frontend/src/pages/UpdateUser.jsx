@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import axios from '../shared/api/axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Upload, ArrowLeft } from 'lucide-react';
+const API_URL = process.env.REACT_APP_API_URL;
 
 export const UpdateUser = () => {
-    const [newAvatar, setNewAvatar] = useState(null);
+    const [newAvatar, setNewAvatar] = useState('');
     const [newUsername, setNewUsername] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { user, token } = useSelector((state) => state.auth);
+
+    const fetchUser = useCallback(async () => {
+        setNewAvatar(user?.imgUrl)
+        setNewUsername(user?.username)
+    }, [])
 
     const handleAvatarChange = (e) => {
         const file = e.target.files[0];
@@ -48,6 +55,10 @@ export const UpdateUser = () => {
         }
     };
 
+    useEffect(() => {
+        fetchUser()
+    }, [fetchUser])
+
     return (
         <div className="w-full max-w-2xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
             <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-200">
@@ -65,17 +76,19 @@ export const UpdateUser = () => {
                     />
                     <Upload className="ml-3 text-blue-500" size={22} />
                 </div>
-
                 {newAvatar && (
                     <div className="mb-8 flex justify-center">
                         <img
-                            src={URL.createObjectURL(newAvatar)}
+                            src={
+                                typeof newAvatar === 'string'
+                                ? `${API_URL}/${newAvatar}`
+                                : URL.createObjectURL(newAvatar)
+                            }
                             alt="Preview"
                             className="w-32 h-32 rounded-full object-cover border-4 border-blue-300 shadow-md transition-transform duration-300 hover:scale-105"
                         />
                     </div>
                 )}
-
                 <div className="mb-8">
                     <label htmlFor="username" className="block text-lg font-medium text-gray-700 mb-2">
                         Новое имя пользователя

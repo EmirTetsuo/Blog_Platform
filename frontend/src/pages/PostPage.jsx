@@ -87,7 +87,7 @@ export const PostPage = () => {
                         </button>
                     </form>
 
-                    <div className='space-y-4'>
+                    <div className='space-y-4 max-h-[400px] overflow-y-auto pr-2'>
                         {comments?.map((cmt) => (
                             <CommentItem key={cmt._id} cmt={cmt} />
                         ))}

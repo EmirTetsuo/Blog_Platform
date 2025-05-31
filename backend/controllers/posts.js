@@ -57,7 +57,7 @@ export const createPost = async (req, res) => {
 export const getAll = async (req, res) => {
     try {
         const { searchQuery, page = 1 } = req.query;
-        const limit = 4; // Количество постов на странице
+        const limit = 7; // Количество постов на странице
         const skip = (page - 1) * limit;
 
         const query = searchQuery ? { title: { $regex: searchQuery, $options: 'i' } } : {};
