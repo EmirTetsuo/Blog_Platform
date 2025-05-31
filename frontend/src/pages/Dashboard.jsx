@@ -108,7 +108,7 @@ export const DashBoard = () => {
         )}
 
         {activeSection === 'posts' && (
-          <div className="grid grid-cols-3 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-3 max-md:grid-cols-1 gap-6">
             {posts?.map((post, idx) => (
               <div
                 key={idx}
