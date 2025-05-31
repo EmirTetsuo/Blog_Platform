@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { FaPen } from 'react-icons/fa';
 import { pathKeys } from '../shared/router/config';
 
 export const PostCard = ({ post }) => {

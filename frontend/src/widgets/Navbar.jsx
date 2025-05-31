@@ -12,7 +12,6 @@ import {
   ListItemButton,
   ListItemText,
   Divider,
-  Typography,
   Box
 } from '@mui/material';
 import avatarImg from "../shared/assets/img/User-avatar.png";

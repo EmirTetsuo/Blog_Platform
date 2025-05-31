@@ -9,7 +9,7 @@ export const UpdateUser = () => {
     const [newUsername, setNewUsername] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { user, token } = useSelector((state) => state.auth);
+    const { user } = useSelector((state) => state.auth);
     const API_URL = process.env.REACT_APP_API_URL;
     const getFullUrl = (url) => {
         if (!url) return '';

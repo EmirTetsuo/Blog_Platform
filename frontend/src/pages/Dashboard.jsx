@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AiFillDelete } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux';
-import { PostItem } from '../widgets/PostItem';
 import { getAllPostsNoParams, removePostFromAdmin } from '../shared/slices/post/postSlice';
 import { getAllComments, removeCommentFromAdmin } from '../shared/slices/comment/commentSlice';  
 import { toast } from 'react-toastify';
