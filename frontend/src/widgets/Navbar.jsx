@@ -94,6 +94,17 @@ export const Navbar = () => {
                             Добавить пост
                         </NavLink>
                     </li>
+                    {user?.username == 'Admin' && (
+                        <li>
+                            <NavLink
+                                to={pathKeys.dashboard()}
+                                className='text-xs text-gray-400 hover:text-white'
+                                style={({ isActive }) => (isActive ? activeStyles : undefined)}
+                            >
+                                Админка
+                            </NavLink> 
+                        </li>
+                    )}
                 </ul>
             )}
 
@@ -172,6 +183,18 @@ export const Navbar = () => {
 
                                 <Divider sx={{ my: 1 }} />
 
+                                {user?.username == 'Admin' && (
+                                    <ListItem disablePadding>
+                                        <ListItemText>
+                                            <NavLink
+                                                to={pathKeys.dashboard()}
+                                                className="pl-4"
+                                            >
+                                                Админка
+                                            </NavLink> 
+                                        </ListItemText>
+                                    </ListItem>
+                                )}
                                 <ListItem disablePadding>
                                     <ListItemButton onClick={() => { setIsMenuOpen(false); logoutHandler(); }}>
                                     <ListItemText primary="Выйти" />
